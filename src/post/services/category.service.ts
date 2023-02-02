@@ -18,8 +18,10 @@ export class CategoryService {
     return await this.categoryRepository.create(createCategoryDto);
   }
 
-  async getPosts(category_id) {
+  async getPosts(category_id: string) {
     return await this.postRepository.findByCondition({
+      //NOTE: { $elemMatch: { $eq: category_id } } tìm các phần tử trong mảng ($elementMatch)
+      //mà bằng ( $eq) với category_id
       categories: { $elemMatch: { $eq: category_id } },
     });
   }
