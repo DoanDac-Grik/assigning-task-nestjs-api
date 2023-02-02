@@ -8,6 +8,7 @@ import { PostModule } from './post/post.module';
 import { UserModule } from './user/user.module';
 import { MediaModule } from './media/media.module';
 import { MailModule } from './mail/mail.module';
+import { SubscriberModule } from './subscriber/subscriber.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MailModule } from './mail/mail.module';
     UserModule,
     MediaModule,
     MailModule,
+    SubscriberModule,
   ],
   controllers: [AppController],
   providers: [
