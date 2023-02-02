@@ -1,25 +1,20 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
-import { PostRepository } from '../repositories/post.repository';
-import { UserService } from '../../user/services/user.service';
-import { User } from '../../user/models/user.model';
-import { CategoryRepository } from '../repositories/category.repository';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { isValidObjectId } from 'mongoose';
+import { User } from '../../user/models/user.model';
+import { UserService } from '../../user/services/user.service';
+import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
+import { CategoryRepository } from '../repositories/category.repository';
+import { PostRepository } from '../repositories/post.repository';
 
 @Injectable()
 export class PostService {
   constructor(
     private readonly postRepository: PostRepository,
-    private readonly userService: UserService,
+
     private readonly categoryRepository: CategoryRepository,
   ) {}
 
-  async getAllPosts(page: number, limit: number, start: string) {
+  async getAllPosts(page: number = 1, limit: number = 10, start: string) {
     const count = await this.postRepository.countDocuments({});
     const count_page = (count / limit).toFixed();
     const posts = await this.postRepository.findByCondition(

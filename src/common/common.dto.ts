@@ -1,16 +1,18 @@
-import { IsMongoId, IsOptional } from 'class-validator';
+import { IsMongoId, IsNumberString, IsOptional } from 'class-validator';
 
 export class PaginationQueryDto {
   @IsOptional()
+  @IsNumberString()
   page: number;
   @IsOptional()
+  @IsNumberString()
   limit: number;
   @IsOptional()
   start: string;
 }
 
 export class MongoIdDto {
-  @IsMongoId()
+  // @IsMongoId()
   id: string;
 }
 

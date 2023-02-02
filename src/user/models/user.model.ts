@@ -1,5 +1,4 @@
-import { Exclude } from 'class-transformer';
-import { Schema, Document } from 'mongoose';
+import { Document, Schema } from 'mongoose';
 const UserSchema = new Schema(
   {
     email: String,

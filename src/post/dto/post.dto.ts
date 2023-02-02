@@ -25,14 +25,3 @@ export class UpdatePostDto {
   @IsOptional()
   content: string;
 }
-
-export class PaginationPostDto {
-  @IsNotEmpty()
-  page: number;
-
-  @IsNotEmpty()
-  limit: number;
-
-  @IsNotEmpty()
-  start: string;
-}
