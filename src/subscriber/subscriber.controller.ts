@@ -9,22 +9,35 @@ export class SubscriberController {
     private readonly subscriberService: ClientProxy,
   ) {}
 
-  @Get()
-  @UseGuards(AuthGuard('jwt'))
-  async getSubscribers() {
-    //TODO: Sau này nếu muốn phần data có thể truyền thêm các parma để pagination...
-    return this.subscriberService.send({ cmd: 'get-all-subscribers' }, {});
-  }
+  //TCP Connection
+  // @Get()
+  // @UseGuards(AuthGuard('jwt'))
+  // async getSubscribers() {
+  //   //TODO: Sau này nếu muốn phần data có thể truyền thêm các parma để pagination...
+  //   return this.subscriberService.send({ cmd: 'get-all-subscribers' }, {});
+  // }
 
-  @Post()
-  @UseGuards(AuthGuard('jwt'))
-  async createSubscriberTCP(@Req() req: any) {
-    return this.subscriberService.send({ cmd: 'add-subscriber' }, req.user);
-  }
+  // @Post()
+  // @UseGuards(AuthGuard('jwt'))
+  // async createSubscriberTCP(@Req() req: any) {
+  //   return this.subscriberService.send({ cmd: 'add-subscriber' }, req.user);
+  // }
 
-  @Post('event')
+  // @Post('event')
+  // @UseGuards(AuthGuard('jwt'))
+  // async createSubscriberEvent(@Req() req: any) {
+  //   this.subscriberService.emit({ cmd: 'add-subscriber' }, req.user);
+  // }
+
+  //RabbitMQ Connection
+  @Post('rmq')
   @UseGuards(AuthGuard('jwt'))
-  async createSubscriberEvent(@Req() req: any) {
-    this.subscriberService.emit({ cmd: 'add-subscriber' }, req.user);
+  async createPost(@Req() req: any) {
+    return this.subscriberService.send(
+      {
+        cmd: 'add-subscriber',
+      },
+      req.user,
+    );
   }
 }
