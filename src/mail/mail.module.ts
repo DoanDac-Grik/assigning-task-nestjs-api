@@ -3,26 +3,31 @@ import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { MailService } from './mail.service';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   providers: [MailService],
   imports: [
-    MailerModule.forRoot({
-      transport: {
-        // Need to add to .env
-        host: 'smtp.sendgrid.net',
-        auth: {
-          user: 'apikey',
-          pass: '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',
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: configService.get('MAIL_HOST'),
+          auth: {
+            user: configService.get('MAIL_AUTH_USER'),
+            pass: configService.get('MAIL_AUTH_PASSWORD'),
+          },
         },
-      },
-      defaults: {
-        from: 'noreply@example.com',
-      },
-      template: {
-        dir: join(__dirname, 'templates'),
-        adapter: new HandlebarsAdapter(),
-      },
+        defaults: {
+          from: configService.get('MAIL_FROM'),
+        },
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new HandlebarsAdapter(),
+        },
+      }),
     }),
   ],
   exports: [MailService],
