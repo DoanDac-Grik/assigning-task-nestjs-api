@@ -1,14 +1,18 @@
 import {
   Body,
+  CacheInterceptor,
+  CACHE_MANAGER,
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
   Query,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs/dist';
 import { AuthGuard } from '@nestjs/passport';
@@ -21,12 +25,14 @@ import { CreatePostCommand } from '../commands/createPost.command';
 import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 import { GetPostQuery } from '../queries/getPost.query';
 import { PostService } from '../services/post.service';
+import { Cache } from 'cache-manager';
 @Controller('posts')
 export class PostController {
   constructor(
     private readonly postService: PostService,
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   @Get('/categories')
@@ -61,8 +67,8 @@ export class PostController {
   //NOTE: Với các params, khi nhận vào vẫn cần khi báo trong @Param, lúc này id sẽ có
   //kiểu theo Dto, cần .toString() để đưa về kiểu string
   @Get('/:id')
-  async getPostById(@Param('id') id: MongoIdDto) {
-    return this.postService.getPostById(id.toString());
+  async getPostById(@Param() postIdDto: MongoIdDto) {
+    return this.postService.getPostById(postIdDto.id);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -90,7 +96,27 @@ export class PostController {
   }
 
   @Get(':id/get-by-query')
-  async getPostByQuery(@Param('id') id: string) {
-    return this.queryBus.execute(new GetPostQuery(id));
+  async getPostByQuery(@Param() id: MongoIdDto) {
+    return this.queryBus.execute(new GetPostQuery(id.id));
+  }
+
+  //Learning cache
+  @UseInterceptors(CacheInterceptor)
+  @Get(':id/get-with-cache')
+  async getPostWithCache(@Param() postIdDto: MongoIdDto) {
+    console.log('ok');
+    return (await this.postService.getPostById(postIdDto.id)).toJSON();
+  }
+
+  @Get('cache/demo/set-cache')
+  async demoSetCache() {
+    await this.cacheManager.set('ok', 'hello world', 1000);
+    return true;
+  }
+
+  @UseInterceptors(CacheInterceptor)
+  @Get('cache/demo/get-cache')
+  async demoGetCache() {
+    return await this.cacheManager.get('ok');
   }
 }

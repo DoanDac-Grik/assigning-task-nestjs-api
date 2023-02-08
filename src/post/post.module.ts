@@ -1,6 +1,8 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
+import * as redisStore from 'cache-manager-redis-store';
 import { UserModule } from '../user/user.module';
 import { CategoryController } from './controllers/category.controller';
 import { PostController } from './controllers/post.controller';
@@ -12,7 +14,7 @@ import { CategoryRepository } from './repositories/category.repository';
 import { PostRepository } from './repositories/post.repository';
 import { CategoryService } from './services/category.service';
 import { PostService } from './services/post.service';
-
+import type { RedisClientOptions } from 'redis';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -27,6 +29,29 @@ import { PostService } from './services/post.service';
     ]),
     UserModule,
     CqrsModule,
+
+    //Normal cache
+    // CacheModule.register({
+    //   ttl: 10000,
+    // }),
+
+    //Redis Cache
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => [
+        {
+          // isGlobal: true,
+          //Warmning!!! redisStore.redisStore to access to store,
+          //if not, it gets store.set() is not a function error
+          store: redisStore.redisStore,
+          host: configService.get<string>('REDIS_HOST'),
+          port: configService.get<number>('REDIS_PORT'),
+          username: configService.get<string>('REDIS_USERNAME'),
+          password: configService.get<string>('REDIS_PASSWORD'),
+        },
+      ],
+    }),
   ],
   controllers: [PostController, CategoryController],
   providers: [

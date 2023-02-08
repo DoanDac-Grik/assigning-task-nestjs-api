@@ -12,7 +12,7 @@ export class PaginationQueryDto {
 }
 
 export class MongoIdDto {
-  // @IsMongoId()
+  @IsMongoId()
   id: string;
 }
 
