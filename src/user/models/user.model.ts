@@ -5,6 +5,8 @@ const UserSchema = new Schema(
     name: String,
     password: String,
     refreshToken: String,
+    twoFactorAuthenticationSecret: String,
+    isTwoFactorAuthenticationEnabled: { type: Boolean, default: false },
   },
   {
     timestamps: true,
@@ -27,4 +29,6 @@ export interface User extends Document {
   name: string;
   password: string;
   refreshToken: string;
+  twoFactorAuthenticationSecret: string;
+  isTwoFactorAuthenticationEnabled: boolean;
 }

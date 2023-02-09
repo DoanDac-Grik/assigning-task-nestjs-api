@@ -21,9 +21,13 @@ export class AuthService {
     private readonly mailService: MailService,
   ) {}
 
-  private async _createToken({ email }, refresh = true) {
+  private async _createToken(
+    { email },
+    isSecondFactorAuthenticated = false,
+    refresh = true,
+  ) {
     const accessToken = this.jwtService.sign(
-      { email },
+      { email, isSecondFactorAuthenticated },
       {
         secret: process.env.SECRETKEY,
         expiresIn: process.env.EXPIRESIN,
@@ -166,5 +170,10 @@ export class AuthService {
     } catch (error) {
       throw new InternalServerErrorException('Internal Error');
     }
+  }
+
+  //2fa
+  async getAccess2FA(user: User) {
+    return this._createToken(user, true);
   }
 }

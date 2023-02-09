@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { truncate } from 'fs';
 import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User } from '../models/user.model';
 import { UserRepository } from '../repositories/user.repository';
@@ -82,5 +83,20 @@ export class UserService {
     }
 
     return user;
+  }
+
+  //Two Factor Authentication Integration
+  async setTwoFactorAuthenticationSecret(secret: string, userId: string) {
+    return this.userRepository.findByIdAndUpdate(userId, {
+      twoFactorAuthenticationSecret: secret,
+    });
+  }
+
+  //TODO: maybe change this method to update two factor authentication status
+  //because user can turn on/off two factor authentication
+  async turnOnTwoFactorAuthentication(userId: string) {
+    return this.userRepository.findByIdAndUpdate(userId, {
+      isTwoFactorAuthenticationEnabled: true,
+    });
   }
 }
