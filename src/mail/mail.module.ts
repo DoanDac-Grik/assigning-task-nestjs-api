@@ -12,12 +12,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       inject: [ConfigService],
 
-      useFactory: (configService: ConfigService) => ({
+      useFactory: async (configService: ConfigService) => ({
         transport: {
           host: configService.get('MAIL_HOST'),
           auth: {
             user: configService.get('MAIL_AUTH_USER'),
-            pass: configService.get('MAIL_AUTH_PASSWORD'),
+            pass: configService.get('MAIL_AUTH_PASS'),
           },
         },
         defaults: {

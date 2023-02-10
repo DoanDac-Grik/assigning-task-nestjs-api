@@ -16,7 +16,6 @@ export class MailService {
         link: link,
       },
     });
-
     return true;
   }
 }

@@ -1,9 +1,11 @@
+import { BullModule } from '@nestjs/bull/dist/bull.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { MailService } from '../mail/mail.service';
+import { EmailConsumer } from './consumers/email.consumer';
 import { AuthController } from './controllers/auth.controller';
 import { TwoFactorAuthenticationController } from './controllers/twoFactorAuth.controller';
 import { UserController } from './controllers/user.controller';
@@ -29,6 +31,7 @@ import { UserService } from './services/user.service';
     MailService,
     TwoFactorAuthenticationService,
     JwtTwoFactorStrategy,
+    EmailConsumer,
   ],
   imports: [
     ConfigModule,
@@ -46,6 +49,9 @@ import { UserService } from './services/user.service';
         signOptions: { expiresIn: configService.get('EXPIRESIN') },
       }),
       inject: [ConfigService],
+    }),
+    BullModule.registerQueue({
+      name: 'send-mail',
     }),
   ],
   exports: [UserService],

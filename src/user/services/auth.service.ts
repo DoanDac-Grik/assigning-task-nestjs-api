@@ -12,12 +12,16 @@ import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    @InjectQueue('send-mail') private sendMail: Queue,
+
     private readonly mailService: MailService,
   ) {}
 
@@ -141,7 +145,18 @@ export class AuthService {
     const link = `http://localhost:3000/auth/reset-password?token=${token}`;
 
     //Send mail
-    await this.mailService.sendForgotPassword(email, link);
+    //Normal sending mail
+    // await this.mailService.sendForgotPassword(email, link);
+
+    //Send mail with queue
+    await this.sendMail.add(
+      'forgot-password',
+      { email, link },
+      {
+        //Remove it from queue when completed
+        removeOnComplete: true,
+      },
+    );
   }
 
   async resetPassword(newPassword: string, token: string) {

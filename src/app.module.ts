@@ -1,5 +1,5 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { MediaModule } from './media/media.module';
 import { MailModule } from './mail/mail.module';
 import { SubscriberModule } from './subscriber/subscriber.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -21,6 +22,16 @@ import { SubscriberModule } from './subscriber/subscriber.module';
     MediaModule,
     MailModule,
     SubscriberModule,
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('REDIS_HOST'),
+          port: configService.get('REDIS_PORT'),
+        },
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [

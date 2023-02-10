@@ -23,6 +23,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.8.7",
     "@nestjs-modules/mailer": "^1.8.1",
+    "@nestjs/bull": "^0.6.3",
     "@nestjs/common": "^9.3.1",
     "@nestjs/config": "^2.3.0",
     "@nestjs/core": "^9.3.1",
@@ -37,6 +38,7 @@
     "amqplib": "^0.10.3",
     "aws-sdk": "^2.1308.0",
     "bcrypt": "^5.1.0",
+    "bull": "^4.10.3",
     "cache-manager": "^5.1.6",
     "cache-manager-redis-store": "^3.0.1",
     "class-transformer": "^0.5.1",
