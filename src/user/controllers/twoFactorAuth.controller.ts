@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import RequestWithUser from '../../common/common.interface';
 import { AuthService } from '../services/auth.service';
 import { TwoFactorAuthenticationService } from '../services/twoFactorAuth.service';
 import { UserService } from '../services/user.service';
@@ -22,7 +23,7 @@ export class TwoFactorAuthenticationController {
 
   @Post('generate')
   @UseGuards(AuthGuard('jwt'))
-  async generate(@Res() res: any, @Req() req: any) {
+  async generate(@Res() res: any, @Req() req: RequestWithUser) {
     const { otpUrl } =
       await this.twoFactorAuthService.generateTwoFactorAuthenticationSecret(
         req.user,
@@ -33,7 +34,7 @@ export class TwoFactorAuthenticationController {
 
   @Post('authenticate')
   @UseGuards(AuthGuard('jwt'))
-  async authentication(@Req() req: any, @Body('code') code) {
+  async authentication(@Req() req: RequestWithUser, @Body('code') code) {
     const isCodeValid =
       await this.twoFactorAuthService.isTwoFactorAuthenticationCodeValid(
         code,
@@ -49,7 +50,7 @@ export class TwoFactorAuthenticationController {
 
   @Post('turn-on')
   @UseGuards(AuthGuard('jwt'))
-  async turnOn2FA(@Req() req: any) {
+  async turnOn2FA(@Req() req: RequestWithUser) {
     return this.userService.turnOnTwoFactorAuthentication(req.user._id);
   }
 }

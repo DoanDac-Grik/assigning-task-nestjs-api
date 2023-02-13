@@ -26,6 +26,7 @@ import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 import { GetPostQuery } from '../queries/getPost.query';
 import { PostService } from '../services/post.service';
 import { Cache } from 'cache-manager';
+import RequestWithUser from '../../common/common.interface';
 @Controller('posts')
 export class PostController {
   constructor(
@@ -73,7 +74,7 @@ export class PostController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  async createPost(@Req() req: any, @Body() post: CreatePostDto) {
+  async createPost(@Req() req: RequestWithUser, @Body() post: CreatePostDto) {
     return this.postService.createPost(req.user, post);
   }
 
@@ -91,7 +92,10 @@ export class PostController {
   //TODO: sau này làm lại một module khác về cqrs cho hoàn chỉnh, đây đang chung chạ
   @UseGuards(AuthGuard('jwt'))
   @Post('create-by-command')
-  async createPostByCommand(@Req() req: any, @Body() post: CreatePostDto) {
+  async createPostByCommand(
+    @Req() req: RequestWithUser,
+    @Body() post: CreatePostDto,
+  ) {
     return this.commandBus.execute(new CreatePostCommand(req.user, post));
   }
 

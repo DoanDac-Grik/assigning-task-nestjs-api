@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ClientGrpc, ClientProxy, GrpcMethod } from '@nestjs/microservices';
 import { AuthGuard } from '@nestjs/passport';
+import RequestWithUser from '../common/common.interface';
 import SubscriberInterface from './subscriber.interface';
 
 @Controller('subscriber')
@@ -36,20 +37,20 @@ export class SubscriberController implements OnModuleInit {
 
   // @Post()
   // @UseGuards(AuthGuard('jwt'))
-  // async createSubscriberTCP(@Req() req: any) {
+  // async createSubscriberTCP(@Req() req: RequestWithUser) {
   //   return this.subscriberService.send({ cmd: 'add-subscriber' }, req.user);
   // }
 
   // @Post('event')
   // @UseGuards(AuthGuard('jwt'))
-  // async createSubscriberEvent(@Req() req: any) {
+  // async createSubscriberEvent(@Req() req: RequestWithUser) {
   //   this.subscriberService.emit({ cmd: 'add-subscriber' }, req.user);
   // }
 
   //RabbitMQ Connection, same for the rest
   // @Post('rmq')
   // @UseGuards(AuthGuard('jwt'))
-  // async createPost(@Req() req: any) {
+  // async createPost(@Req() req: RequestWithUser) {
   //   return this.subscriberService.send(
   //     {
   //       cmd: 'add-subscriber',
@@ -66,7 +67,7 @@ export class SubscriberController implements OnModuleInit {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async createPost(@Req() req: any) {
+  async createPost(@Req() req: RequestWithUser) {
     return this.gRpcService.addSubscriber({
       email: req.user.email,
       name: req.user.name,

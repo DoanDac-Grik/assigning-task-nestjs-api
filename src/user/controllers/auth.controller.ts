@@ -16,6 +16,7 @@ import {
 } from 'src/user/dto/user.dto';
 import { AuthService } from '../services/auth.service';
 import { AuthGuard } from '@nestjs/passport';
+import RequestWithUser from '../../common/common.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -38,7 +39,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard())
   @Post('logout')
-  async logout(@Req() req: any) {
+  async logout(@Req() req: RequestWithUser) {
     await this.authService.logout(req.user);
     return {
       statusCode: 200,
