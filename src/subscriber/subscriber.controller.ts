@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ClientGrpc, ClientProxy, GrpcMethod } from '@nestjs/microservices';
 import { AuthGuard } from '@nestjs/passport';
-import RequestWithUser from '../common/common.interface';
+import { RequestWithUser } from '../common/common.interface';
 import SubscriberInterface from './subscriber.interface';
 
 @Controller('subscriber')

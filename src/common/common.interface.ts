@@ -9,6 +9,6 @@ export interface IPaginationResponse<T> {
 }
 
 //Request with User
-export default interface RequestWithUser extends Request {
+export interface RequestWithUser extends Request {
   user: User;
 }

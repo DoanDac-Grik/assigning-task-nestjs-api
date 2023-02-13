@@ -19,7 +19,7 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
   }
 
   async validate({ email, isSecondFactorAuthenticated }) {
-    const user = await this.authService.validateUser(email);
+    let user = await this.authService.validateUser(email);
 
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
@@ -32,6 +32,8 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
       throw new HttpException('Permission Denied', HttpStatus.FORBIDDEN);
     }
 
+    //TODO: update later
+    user.password = undefined;
     return user;
   }
 }

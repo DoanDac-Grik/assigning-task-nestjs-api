@@ -1,3 +1,4 @@
+import { InjectQueue } from '@nestjs/bull';
 import {
   HttpException,
   HttpStatus,
@@ -7,13 +8,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { Queue } from 'bull';
 import { MailService } from '../../mail/mail.service';
 import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
-import * as bcrypt from 'bcrypt';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
 
 @Injectable()
 export class AuthService {
@@ -122,6 +122,7 @@ export class AuthService {
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
+
     return user;
   }
 

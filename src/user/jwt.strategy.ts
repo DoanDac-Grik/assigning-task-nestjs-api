@@ -22,6 +22,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
 
+    //TODO: update later
+    user.password = undefined;
     return user;
   }
 }

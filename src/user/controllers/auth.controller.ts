@@ -16,7 +16,7 @@ import {
 } from 'src/user/dto/user.dto';
 import { AuthService } from '../services/auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import RequestWithUser from '../../common/common.interface';
+import { RequestWithUser } from '../../common/common.interface';
 
 @Controller('auth')
 export class AuthController {

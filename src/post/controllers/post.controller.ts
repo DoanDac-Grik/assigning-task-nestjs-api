@@ -26,7 +26,7 @@ import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 import { GetPostQuery } from '../queries/getPost.query';
 import { PostService } from '../services/post.service';
 import { Cache } from 'cache-manager';
-import RequestWithUser from '../../common/common.interface';
+import { RequestWithUser } from '../../common/common.interface';
 @Controller('posts')
 export class PostController {
   constructor(

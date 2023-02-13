@@ -1,6 +1,6 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import RequestWithUser from '../../common/common.interface';
+import { RequestWithUser } from '../../common/common.interface';
 
 @Controller('users')
 export class UserController {
@@ -9,12 +9,6 @@ export class UserController {
   @Get('profile')
   async getProfile(@Req() req: RequestWithUser) {
     const user = req.user;
-
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      refreshToken: user.refreshToken,
-    };
+    return user;
   }
 }

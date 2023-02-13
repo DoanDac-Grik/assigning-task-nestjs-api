@@ -8,7 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import RequestWithUser from '../../common/common.interface';
+import { RequestWithUser } from '../../common/common.interface';
+
 import { AuthService } from '../services/auth.service';
 import { TwoFactorAuthenticationService } from '../services/twoFactorAuth.service';
 import { UserService } from '../services/user.service';
