@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { User } from '../user/models/user.model';
+import { User } from '../modules/user/models/user.model';
 
 //Pagination Response
 export interface IPaginationResponse<T> {
