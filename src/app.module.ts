@@ -10,6 +10,7 @@ import { MediaModule } from './media/media.module';
 import { MailModule } from './mail/mail.module';
 import { SubscriberModule } from './subscriber/subscriber.module';
 import { BullModule } from '@nestjs/bull';
+import { WorkModule } from './work/work.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { BullModule } from '@nestjs/bull';
         },
       }),
     }),
+    WorkModule,
   ],
   controllers: [AppController],
   providers: [

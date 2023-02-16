@@ -8,6 +8,7 @@ export class PaginationQueryDto {
   @IsNumberString()
   limit: number;
   @IsOptional()
+  @IsMongoId()
   start: string;
 }
 
