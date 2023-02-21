@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { isValidObjectId } from 'mongoose';
-import { ZERO_OBJECT_ID } from '../../../common/common.constant';
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  ZERO_OBJECT_ID,
+} from '../../../common/common.constant';
 import { User } from '../../user/models/user.model';
 import { Status } from '../constants/work.consant';
 import { CreateWorkDto, UpdateWorkDto } from '../dtos/work.dto';
@@ -14,7 +18,11 @@ export class WorkService {
     private readonly taskRepository: TaskRepository,
   ) {}
 
-  async getAll(page: number = 1, limit: number = 10, start: string) {
+  async getAll(
+    page: number = DEFAULT_PAGE,
+    limit: number = DEFAULT_PAGE_SIZE,
+    start: string,
+  ) {
     const count = await this.workRepository.countDocuments({});
     const count_page = (count / limit).toFixed();
 

@@ -25,12 +25,12 @@ export class AuthService {
   ) {}
 
   private async _createToken(
-    { email },
+    { email, permissions },
     isSecondFactorAuthenticated = false,
     refresh = true,
   ) {
     const accessToken = this.jwtService.sign(
-      { email, isSecondFactorAuthenticated },
+      { email, isSecondFactorAuthenticated, permissions },
       {
         secret: process.env.SECRETKEY,
         expiresIn: process.env.EXPIRESIN,
@@ -70,7 +70,10 @@ export class AuthService {
   async register(userDto: CreateUserDto) {
     const user = await this.userService.create(userDto);
 
-    const token = await this._createToken({ email: user.email });
+    const token = await this._createToken({
+      email: user.email,
+      permissions: user.permissions,
+    });
 
     return {
       email: user.email,

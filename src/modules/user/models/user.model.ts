@@ -7,6 +7,7 @@ const UserSchema = new Schema(
     refreshToken: String,
     twoFactorAuthenticationSecret: String,
     isTwoFactorAuthenticationEnabled: { type: Boolean, default: false },
+    permissions: Array<string>,
   },
   {
     timestamps: true,
@@ -31,4 +32,5 @@ export interface User extends Document {
   refreshToken: string;
   twoFactorAuthenticationSecret: string;
   isTwoFactorAuthenticationEnabled: boolean;
+  permissions: string[];
 }

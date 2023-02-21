@@ -13,6 +13,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { PaginationQueryDto } from '../../../common/common.dto';
 import { RequestWithUser } from '../../../common/common.interface';
+import PermissionGuard from '../../user/permision.guard';
+import Permission from '../../user/permission.type';
 import {
   AssignReviewerDto,
   AssignTaskDto,
@@ -51,11 +53,13 @@ export class TaskController {
     return this.taskService.update(paramIds.taskId, data);
   }
 
+  @UseGuards(PermissionGuard(Permission.DeleteTask))
   @Delete('/:taskId')
   async deleteTask(@Param() paramIds: ParamIdsDto) {
     return this.taskService.delete(paramIds.taskId);
   }
 
+  @UseGuards(PermissionGuard(Permission.AssignTask))
   @Put('/:taskId/assign')
   async assignTask(
     @Param() paramIds: ParamIdsDto,
@@ -64,11 +68,13 @@ export class TaskController {
     return this.taskService.assign(paramIds.taskId, data);
   }
 
+  @UseGuards(PermissionGuard(Permission.UnAssignTask))
   @Put('/:taskId/un-assign')
   async unAssignTask(@Param() paramIds: ParamIdsDto) {
     return this.taskService.unAssign(paramIds.taskId);
   }
 
+  @UseGuards(PermissionGuard(Permission.AssignReviewer))
   @Put('/:taskId/assign-reviewer')
   async assignReviewer(
     @Param() paramIds: ParamIdsDto,
@@ -77,6 +83,7 @@ export class TaskController {
     return this.taskService.assignReviewer(paramIds.taskId, data);
   }
 
+  @UseGuards(PermissionGuard(Permission.UnAssignReviewer))
   @Put('/:taskId/un-assign-reviewer')
   async unAssignReviewer(@Param() paramIds: ParamIdsDto) {
     return this.taskService.unAssignReviewer(paramIds.taskId);

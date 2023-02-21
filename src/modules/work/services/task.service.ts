@@ -1,18 +1,18 @@
+import { InjectQueue } from '@nestjs/bull';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Queue } from 'bull';
 import { isValidObjectId } from 'mongoose';
 import { ZERO_OBJECT_ID } from '../../../common/common.constant';
 import { User } from '../../user/models/user.model';
+import { Stage } from '../constants/task.constant';
 import {
   AssignReviewerDto,
   AssignTaskDto,
   CreateTaskDto,
   UpdateTaskDto,
 } from '../dtos/task.dto';
-import { Stage } from '../constants/task.constant';
 import { TaskRepository } from '../repositories/task.repository';
 import { WorkRepository } from '../repositories/work.repository';
-import { Queue } from 'bull';
-import { InjectQueue } from '@nestjs/bull';
 
 @Injectable()
 export class TaskService {
@@ -42,6 +42,7 @@ export class TaskService {
     const task = { creator: user._id, stage: Stage.TODO, ...data };
     const new_task = await this.taskRepository.create(task);
 
+    //TODO: promise all
     await this.workRepository.updateMany(
       { _id: { $in: data.workId } },
       {

@@ -54,6 +54,6 @@ import { UserService } from './services/user.service';
       name: 'auth-mail',
     }),
   ],
-  exports: [UserService],
+  exports: [UserService, UserRepository],
 })
 export class UserModule {}

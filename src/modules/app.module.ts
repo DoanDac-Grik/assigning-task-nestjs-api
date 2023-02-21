@@ -1,20 +1,17 @@
+import { BullModule } from '@nestjs/bull';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PostModule } from './post/post.module';
-import { UserModule } from './user/user.module';
-import { MediaModule } from './media/media.module';
 import { MailModule } from './mail/mail.module';
-import { SubscriberModule } from './subscriber/subscriber.module';
-import { BullModule } from '@nestjs/bull';
+import { MediaModule } from './media/media.module';
+import { UserModule } from './user/user.module';
 import { WorkModule } from './work/work.module';
 
 @Module({
   imports: [
-    PostModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URL, {
       useNewUrlParser: true,
@@ -22,7 +19,6 @@ import { WorkModule } from './work/work.module';
     UserModule,
     MediaModule,
     MailModule,
-    SubscriberModule,
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -13,15 +13,15 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { MongoIdDto, PaginationQueryDto } from '../../../common/common.dto';
 import { RequestWithUser } from '../../../common/common.interface';
+import PermissionGuard from '../../user/permision.guard';
+import Permission from '../../user/permission.type';
 import { CreateTaskDto } from '../dtos/task.dto';
 import { CreateWorkDto, UpdateWorkDto } from '../dtos/work.dto';
 import { WorkService } from '../services/work.service';
-
 @UseGuards(AuthGuard('jwt-two-factor'))
 @Controller('works')
 export class WorkController {
   constructor(private readonly workService: WorkService) {}
-
   @Get()
   async getAllWorks(@Query() { page, limit, start }: PaginationQueryDto) {
     return this.workService.getAll(page, limit, start);
@@ -37,6 +37,7 @@ export class WorkController {
     return this.workService.getById(paramId.id);
   }
 
+  @UseGuards(PermissionGuard(Permission.UpdateWork))
   @Put('/:id')
   async updateWork(
     @Body() update: UpdateWorkDto,
@@ -45,6 +46,7 @@ export class WorkController {
     return this.workService.update(paramId.id, update);
   }
 
+  @UseGuards(PermissionGuard(Permission.DeleteWork))
   @Delete('/:id')
   async deleteWork(@Param() paramId: MongoIdDto) {
     return this.workService.delete(paramId.id);

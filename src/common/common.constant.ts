@@ -1,1 +1,3 @@
 export const ZERO_OBJECT_ID = '000000000000000000000000';
+export const DEFAULT_PAGE_SIZE = 5;
+export const DEFAULT_PAGE = 1;
