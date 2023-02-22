@@ -11,9 +11,11 @@
 ## Description
 
 Apis of application that helps manage tasks and progress of members in team.
-This application is constantly updated for learning purpose and showing experience to recruiters
+This application is constantly updated for learning purpose and showing experience to recruiters.
 
-##Features
+Swagger api documentation: `localhost:3000/documentation`
+
+## Features
 
 - Register/login/forgot and reset password for user
 - Two factor authentication with QR Code
@@ -22,7 +24,7 @@ This application is constantly updated for learning purpose and showing experien
 - CRUD task, assign/unassign task, assign reviewer for this task
 - Send mail notification when member is assigned to task or assigned to review a task
 
-`Updating: Bot Telegram, refactor to better authorization, upload document to S3`
+`Updating: Bot Telegram, refactor to better authorization, upload document to S3,...`
 
 ## Tech Stack
 
@@ -37,11 +39,21 @@ This application is constantly updated for learning purpose and showing experien
 
 ## Installation
 
+Clone the repository
+
+```bash
+$ git clone https://github.com/DoanDac-Grik/assigning-task-nestjs-api
+```
+
+Install dependencies
+
 ```bash
 $ npm install
 ```
 
 ## Running the app
+
+Before running app, ensure that Redis is running
 
 ```bash
 # development
