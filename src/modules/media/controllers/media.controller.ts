@@ -11,8 +11,10 @@ import {
   Delete,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 import { MediaService } from '../services/media.service';
 
+@ApiTags('Task Documentation')
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}

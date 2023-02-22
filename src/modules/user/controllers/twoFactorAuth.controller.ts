@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { RequestWithUser } from '../../../common/common.interface';
 
 import { AuthService } from '../services/auth.service';
@@ -15,6 +16,7 @@ import { TwoFactorAuthenticationService } from '../services/twoFactorAuth.servic
 import { UserService } from '../services/user.service';
 
 @Controller('2fa')
+@ApiTags('Two Factor Authentication')
 export class TwoFactorAuthenticationController {
   constructor(
     private readonly twoFactorAuthService: TwoFactorAuthenticationService,
