@@ -11,6 +11,7 @@
 ## Description
 
 Apis of application that helps manage tasks and progress of members in team.
+This application is constantly updated with learning purpose and showing my experience to recruiters
 
 ## Tech Stack
 
