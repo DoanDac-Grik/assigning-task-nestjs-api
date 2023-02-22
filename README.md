@@ -11,7 +11,18 @@
 ## Description
 
 Apis of application that helps manage tasks and progress of members in team.
-This application is constantly updated with learning purpose and showing my experience to recruiters
+This application is constantly updated for learning purpose and showing experience to recruiters
+
+##Features
+
+- Register/login/forgot and reset password for user
+- Two factor authentication with QR Code
+- Authorization manager and members using claim-base authorization
+- CRUD work (bunch of tasks)
+- CRUD task, assign/unassign task, assign reviewer for this task
+- Send mail notification when member is assigned to task or assigned to review a task
+
+`Updating: Bot Telegram, refactor to better authorization, upload document to S3`
 
 ## Tech Stack
 
@@ -56,15 +67,13 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Feedback and Help
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+If you have any questions or have suggestions about my application, do not hesitate to contact me via information below.
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Doan Van Dac](https://www.facebook.com/humanbeatbox.grik/)
 
 ## License
 
