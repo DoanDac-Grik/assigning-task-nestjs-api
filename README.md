@@ -53,7 +53,7 @@ $ npm install
 
 ## Running the app
 
-Before running app, ensure that Redis is running
+Before running app, ensure that Redis is running and .env is setted properly
 
 ```bash
 # development
