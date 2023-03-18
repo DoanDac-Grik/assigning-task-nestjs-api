@@ -33,7 +33,7 @@ export class UserService {
     const user = await this.userRepository.findOneByCondition({
       email: loginPayload.email,
     });
-    console.log(user);
+
     if (!user) {
       throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
     }
@@ -47,10 +47,16 @@ export class UserService {
     return user;
   }
 
-  async findByEmail(email: string) {
-    return await this.userRepository.findOneByCondition({
-      email: email,
-    });
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOneByCondition(
+      {
+        email: email,
+      },
+      '-password',
+    );
+
+    console.log('lololo', user);
+    return user;
   }
 
   async update(filter: Partial<User>, update: Partial<User>) {
@@ -94,8 +100,13 @@ export class UserService {
   //TODO: maybe change this method to update two factor authentication status
   //because user can turn on/off two factor authentication
   async turnOnTwoFactorAuthentication(userId: string) {
-    return this.userRepository.findByIdAndUpdate(userId, {
+    const user = await this.userRepository.findByIdAndUpdate(userId, {
       isTwoFactorAuthenticationEnabled: true,
     });
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: `Turn on two factor authentication for ${user.name}`,
+    };
   }
 }

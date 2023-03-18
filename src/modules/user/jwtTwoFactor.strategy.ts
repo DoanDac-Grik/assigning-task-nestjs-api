@@ -32,8 +32,6 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
       throw new HttpException('Permission Denied', HttpStatus.FORBIDDEN);
     }
 
-    //TODO: update later
-    user.password = undefined;
     return user;
   }
 }

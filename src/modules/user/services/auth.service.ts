@@ -10,9 +10,10 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Queue } from 'bull';
+import { Response } from '../../../common/common.interface';
 import { MailService } from '../../mail/mail.service';
 import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
-import { User } from '../models/user.model';
+import { User, UserTokenInfo } from '../models/user.model';
 import { UserService } from './user.service';
 
 @Injectable()
@@ -67,7 +68,7 @@ export class AuthService {
     }
   }
 
-  async register(userDto: CreateUserDto) {
+  async register(userDto: CreateUserDto): Promise<Response<UserTokenInfo>> {
     const user = await this.userService.create(userDto);
 
     const token = await this._createToken({
@@ -76,12 +77,16 @@ export class AuthService {
     });
 
     return {
-      email: user.email,
-      ...token,
+      statusCode: HttpStatus.CREATED,
+      message: 'Register successfully',
+      data: {
+        email: user.email,
+        ...token,
+      },
     };
   }
 
-  async refresh(refresh_token: string) {
+  async refresh(refresh_token: string): Promise<Response<UserTokenInfo>> {
     try {
       const payload = await this.jwtService.verify(refresh_token, {
         secret: process.env.SECRETKEY_REFRESH,
@@ -94,8 +99,12 @@ export class AuthService {
 
       const token = await this._createToken(user, false);
       return {
-        email: user.email,
-        ...token,
+        statusCode: HttpStatus.OK,
+        message: 'Refresh token successfully',
+        data: {
+          email: user.email,
+          ...token,
+        },
       };
     } catch (e) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
@@ -109,18 +118,23 @@ export class AuthService {
     );
   }
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserDto): Promise<Response<UserTokenInfo>> {
     const user = await this.userService.findByLogin(loginUserDto);
     const token = await this._createToken(user);
 
     return {
-      email: user.email,
-      ...token,
+      statusCode: HttpStatus.OK,
+      message: 'Login successfully',
+      data: {
+        email: user.email,
+        ...token,
+      },
     };
   }
 
-  async validateUser(email: string) {
+  async validateUser(email: string): Promise<User> {
     const user = await this.userService.findByEmail(email);
+
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }

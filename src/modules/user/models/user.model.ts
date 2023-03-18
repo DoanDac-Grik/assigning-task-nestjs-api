@@ -1,3 +1,4 @@
+import { OmitType } from '@nestjs/swagger';
 import { Document, Schema } from 'mongoose';
 import { Factory } from 'nestjs-seeder';
 
@@ -49,4 +50,13 @@ export interface User {
   twoFactorAuthenticationSecret: string;
   isTwoFactorAuthenticationEnabled: boolean;
   roles: string[];
+}
+
+// export type UserInfo = Omit<User, 'password'>;
+export interface UserTokenInfo {
+  email: string;
+  expiresIn: string;
+  accessToken: string;
+  refreshToken?: string;
+  expiresInRefresh?: string;
 }

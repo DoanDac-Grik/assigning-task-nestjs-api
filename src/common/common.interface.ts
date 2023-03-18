@@ -13,14 +13,15 @@ export interface RequestWithUser extends Request {
   user: User;
 }
 
-export interface SucessResponse<T> {
+export interface Response<T> {
   statusCode: number;
   message: string;
   data?: T | Array<T>;
-}
-
-export interface FailResponse {
-  statusCode: number;
-  message: string;
   error?: string;
 }
+
+// export interface FailResponse {
+//   statusCode: number;
+//   message: string;
+//   error?: string;
+// }

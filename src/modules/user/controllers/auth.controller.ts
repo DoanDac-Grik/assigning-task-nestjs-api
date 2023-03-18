@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Post,
   Query,
   Req,
@@ -44,7 +45,8 @@ export class AuthController {
   async logout(@Req() req: RequestWithUser) {
     await this.authService.logout(req.user);
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
+      message: 'User logged out',
     };
   }
 
@@ -52,7 +54,7 @@ export class AuthController {
   async forgotPassword(@Body() body: ForgotPasswordDto) {
     await this.authService.forgotPassword(body.email);
     return {
-      statusCode: 201,
+      statusCode: HttpStatus.CREATED,
       message: 'Mail sent successfully',
     };
   }

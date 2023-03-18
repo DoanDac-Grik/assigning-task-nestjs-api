@@ -14,8 +14,11 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { MongoIdDto, PaginationQueryDto } from '../../../common/common.dto';
 import { RequestWithUser } from '../../../common/common.interface';
+import Role from '../../user/role.enum';
+import RoleGuard from '../../user/role.guard';
 import PermissionGuard from '../../user/role.guard';
-import Permission from '../../user/role.enum';
+import { CreateWorkDto, UpdateWorkDto } from '../dtos/work.dto';
+import { WorkService } from '../services/work.service';
 import {
   SwaggerCreateWork,
   SwaggerDeleteWork,
@@ -23,9 +26,6 @@ import {
   SwaggerListWorks,
   SwaggerUpdateWork,
 } from '../work.swagger';
-import { CreateWorkDto, UpdateWorkDto } from '../dtos/work.dto';
-import { WorkService } from '../services/work.service';
-import Role from '../../user/role.enum';
 @UseGuards(AuthGuard('jwt-two-factor'))
 @Controller('works')
 @ApiTags('Works')
@@ -37,7 +37,7 @@ export class WorkController {
     return this.workService.getAll(page, limit, start);
   }
 
-  @UseGuards(PermissionGuard(Role.Admin))
+  @UseGuards(RoleGuard(Role.Admin))
   @Post()
   @SwaggerCreateWork()
   async createWork(@Req() req: RequestWithUser, @Body() data: CreateWorkDto) {
