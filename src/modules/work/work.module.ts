@@ -15,8 +15,8 @@ import { WorkService } from './services/work.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: 'Task', schema: TaskSchema },
-      { name: 'Work', schema: WorkSchema },
+      { name: 'TaskModel', schema: TaskSchema },
+      { name: 'WorkModel', schema: WorkSchema },
     ]),
     BullModule.registerQueue({
       name: 'task-mail',

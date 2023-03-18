@@ -14,17 +14,18 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { MongoIdDto, PaginationQueryDto } from '../../../common/common.dto';
 import { RequestWithUser } from '../../../common/common.interface';
-import PermissionGuard from '../../user/permision.guard';
-import Permission from '../../user/permission.type';
+import PermissionGuard from '../../user/role.guard';
+import Permission from '../../user/role.enum';
 import {
   SwaggerCreateWork,
   SwaggerDeleteWork,
   SwaggerGetWork,
   SwaggerListWorks,
   SwaggerUpdateWork,
-} from '../decorators/workSwagger.decorator';
+} from '../work.swagger';
 import { CreateWorkDto, UpdateWorkDto } from '../dtos/work.dto';
 import { WorkService } from '../services/work.service';
+import Role from '../../user/role.enum';
 @UseGuards(AuthGuard('jwt-two-factor'))
 @Controller('works')
 @ApiTags('Works')
@@ -36,7 +37,7 @@ export class WorkController {
     return this.workService.getAll(page, limit, start);
   }
 
-  @UseGuards(PermissionGuard(Permission.CreateWork))
+  @UseGuards(PermissionGuard(Role.Admin))
   @Post()
   @SwaggerCreateWork()
   async createWork(@Req() req: RequestWithUser, @Body() data: CreateWorkDto) {
@@ -49,7 +50,7 @@ export class WorkController {
     return this.workService.getById(paramId.id);
   }
 
-  @UseGuards(PermissionGuard(Permission.UpdateWork))
+  @UseGuards(PermissionGuard(Role.Admin))
   @Put('/:id')
   @SwaggerUpdateWork()
   async updateWork(
@@ -59,7 +60,7 @@ export class WorkController {
     return this.workService.update(paramId.id, update);
   }
 
-  @UseGuards(PermissionGuard(Permission.DeleteWork))
+  @UseGuards(PermissionGuard(Role.Admin))
   @Delete('/:id')
   @SwaggerDeleteWork()
   async deleteWork(@Param() paramId: MongoIdDto) {

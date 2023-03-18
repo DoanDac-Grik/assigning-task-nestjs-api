@@ -1,4 +1,6 @@
 import { Document, Schema } from 'mongoose';
+import { Factory } from 'nestjs-seeder';
+
 const UserSchema = new Schema(
   {
     email: String,
@@ -7,7 +9,7 @@ const UserSchema = new Schema(
     refreshToken: String,
     twoFactorAuthenticationSecret: String,
     isTwoFactorAuthenticationEnabled: { type: Boolean, default: false },
-    permissions: Array<string>,
+    roles: Array<string>,
   },
   {
     timestamps: true,
@@ -24,13 +26,27 @@ UserSchema.virtual('posts', {
 
 export { UserSchema };
 
-export interface User extends Document {
-  id: string;
+export class UserModel extends Document {
+  @Factory((_faker, ctx) => ctx.email)
+  email: string;
+  @Factory((_faker, ctx) => ctx.name)
+  name: string;
+  @Factory((_faker, ctx) => ctx.password)
+  password: string;
+  refreshToken: string;
+  twoFactorAuthenticationSecret: string;
+  isTwoFactorAuthenticationEnabled: boolean;
+  @Factory((_faker, ctx) => ctx.roles)
+  roles: string[];
+}
+
+export interface User {
+  _id: string;
   email: string;
   name: string;
   password: string;
   refreshToken: string;
   twoFactorAuthenticationSecret: string;
   isTwoFactorAuthenticationEnabled: boolean;
-  permissions: string[];
+  roles: string[];
 }

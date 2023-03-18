@@ -1,8 +1,13 @@
 import { InjectQueue } from '@nestjs/bull';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { Queue } from 'bull';
 import { isValidObjectId } from 'mongoose';
 import { ZERO_OBJECT_ID } from '../../../common/common.constant';
+import {
+  FailResponse,
+  IPaginationResponse,
+  SucessResponse,
+} from '../../../common/common.interface';
 import { User } from '../../user/models/user.model';
 import { Stage } from '../constants/task.constant';
 import {
@@ -11,6 +16,7 @@ import {
   CreateTaskDto,
   UpdateTaskDto,
 } from '../dtos/task.dto';
+import { Task } from '../models/task.model';
 import { TaskRepository } from '../repositories/task.repository';
 import { WorkRepository } from '../repositories/work.repository';
 
@@ -22,9 +28,13 @@ export class TaskService {
     @InjectQueue('task-mail') private sendMail: Queue,
   ) {}
 
-  async getAll(page: number = 1, limit: number = 10, start: string) {
+  async getAll(
+    page: number = 1,
+    limit: number = 10,
+    start: string,
+  ): Promise<SucessResponse<IPaginationResponse<Task[]>> | FailResponse> {
     const count = await this.taskRepository.countDocuments({});
-    const count_page = (count / limit).toFixed();
+    const total_page = Math.round(count / limit);
     const tasks = await this.taskRepository.findByCondition(
       {
         _id: {
@@ -35,7 +45,16 @@ export class TaskService {
       { sort: { _id: 1 }, skip: (page - 1) * limit, limit: Number(limit) },
     );
 
-    return { count, count_page, tasks };
+    // return { count, count_page, tasks };
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Get all tasks completed',
+      data: {
+        count: count,
+        total_page: total_page,
+        data: tasks,
+      },
+    };
   }
 
   async create(user: User, data: CreateTaskDto) {
@@ -95,8 +114,6 @@ export class TaskService {
       throw new NotFoundException(id);
     }
 
-    const dkm = await this.sendMail.getCompleted();
-    console.log('okok', dkm);
     await this.sendMail.add(
       'assign-task',
       {

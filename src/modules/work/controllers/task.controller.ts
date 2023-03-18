@@ -14,8 +14,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from '../../../common/common.dto';
 import { RequestWithUser } from '../../../common/common.interface';
-import PermissionGuard from '../../user/permision.guard';
-import Permission from '../../user/permission.type';
+import PermissionGuard from '../../user/role.guard';
+import Permission from '../../user/role.enum';
 import {
   SwaggerAssignReviewer,
   SwaggerAssignTask,
@@ -26,7 +26,7 @@ import {
   SwaggerUnassignReviewer,
   SwaggerUnassignTask,
   SwaggerUpdateTask,
-} from '../decorators/taskSwagger.decorator';
+} from '../task.swagger';
 import {
   AssignReviewerDto,
   AssignTaskDto,
@@ -35,6 +35,7 @@ import {
   UpdateTaskDto,
 } from '../dtos/task.dto';
 import { TaskService } from '../services/task.service';
+import Role from '../../user/role.enum';
 
 @UseGuards(AuthGuard('jwt-two-factor'))
 @Controller('works/:workId/tasks')
@@ -48,6 +49,7 @@ export class TaskController {
     return this.taskService.getAll(page, limit, start);
   }
 
+  @UseGuards(PermissionGuard(Role.Admin))
   @Post()
   @SwaggerCreateTask()
   async createTask(@Req() req: RequestWithUser, @Body() data: CreateTaskDto) {
@@ -70,14 +72,14 @@ export class TaskController {
     return this.taskService.update(paramIds.taskId, data);
   }
 
-  @UseGuards(PermissionGuard(Permission.DeleteTask))
+  @UseGuards(PermissionGuard(Role.Admin))
   @Delete('/:taskId')
   @SwaggerDeleteTask()
   async deleteTask(@Param() paramIds: ParamIdsDto) {
     return this.taskService.delete(paramIds.taskId);
   }
 
-  @UseGuards(PermissionGuard(Permission.AssignTask))
+  @UseGuards(PermissionGuard(Role.Admin))
   @Put('/:taskId/assign')
   @SwaggerAssignTask()
   async assignTask(
@@ -87,14 +89,14 @@ export class TaskController {
     return this.taskService.assign(paramIds.taskId, data);
   }
 
-  @UseGuards(PermissionGuard(Permission.UnAssignTask))
+  @UseGuards(PermissionGuard(Role.Admin))
   @Put('/:taskId/un-assign')
   @SwaggerUnassignTask()
   async unAssignTask(@Param() paramIds: ParamIdsDto) {
     return this.taskService.unAssign(paramIds.taskId);
   }
 
-  @UseGuards(PermissionGuard(Permission.AssignReviewer))
+  @UseGuards(PermissionGuard(Role.Admin))
   @Put('/:taskId/assign-reviewer')
   @SwaggerAssignReviewer()
   async assignReviewer(
@@ -104,7 +106,7 @@ export class TaskController {
     return this.taskService.assignReviewer(paramIds.taskId, data);
   }
 
-  @UseGuards(PermissionGuard(Permission.UnAssignReviewer))
+  @UseGuards(PermissionGuard(Role.Admin))
   @Put('/:taskId/un-assign-reviewer')
   @SwaggerUnassignReviewer()
   async unAssignReviewer(@Param() paramIds: ParamIdsDto) {

@@ -29,7 +29,18 @@ const TaskSchema = new Schema(
 
 export { TaskSchema };
 
-export interface Task extends Document {
+export class TaskModel extends Document {
+  title: string;
+  description: string;
+  workId: string;
+  reviewer: User;
+  assignee: User;
+  creator: User;
+  stage: string;
+  document_link: string;
+}
+
+export interface Task {
   title: string;
   description: string;
   workId: string;

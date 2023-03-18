@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { CreateTaskDto, UpdateTaskDto } from '../dtos/task.dto';
+import { CreateTaskDto, UpdateTaskDto } from './dtos/task.dto';
 
 const DESCRIPTION_FOR_PAGE =
   'Current page to pagination, if not have value, default is 1';

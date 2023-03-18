@@ -18,7 +18,15 @@ const WorkSchema = new Schema(
 
 export { WorkSchema };
 
-export interface Work extends Document {
+export class WorkModel extends Document {
+  title: string;
+  description: string;
+  status: string;
+  tasks: [Task];
+  creator: User;
+}
+
+export interface Work {
   title: string;
   description: string;
   status: string;

@@ -15,8 +15,15 @@ const MediaSchema = new Schema(
 );
 
 export { MediaSchema };
-
-export interface Media extends Document {
+export interface MediaModel extends Document {
+  name: string;
+  file_name: string;
+  mime_type: string;
+  size: number;
+  key: string;
+  created_at: Date;
+}
+export interface Media {
   name: string;
   file_name: string;
   mime_type: string;

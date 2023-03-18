@@ -1,6 +1,6 @@
 import { FilterQuery, Model, QueryOptions, Document } from 'mongoose';
 
-export class BaseRepository<T extends Document> {
+export class BaseRepository<T, K> {
   constructor(private readonly model: Model<T>) {}
 
   async create(doc): Promise<any> {
@@ -8,7 +8,7 @@ export class BaseRepository<T extends Document> {
     return await createdEntity.save();
   }
 
-  async findById(id: string, option?: QueryOptions): Promise<T> {
+  async findById(id: string, option?: QueryOptions) {
     return await this.model.findById(id, option);
   }
 
@@ -26,11 +26,11 @@ export class BaseRepository<T extends Document> {
     field?: any | null,
     option?: any | null,
     populate?: any | null,
-  ): Promise<T[]> {
+  ): Promise<K[]> {
     return await this.model.find(filter, field, option).populate(populate);
   }
 
-  async findAll(): Promise<T[]> {
+  async findAll(): Promise<K[]> {
     return await this.model.find();
   }
 

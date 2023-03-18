@@ -35,7 +35,7 @@ import { UserService } from './services/user.service';
   ],
   imports: [
     ConfigModule,
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: 'UserModel', schema: UserSchema }]),
     PassportModule.register({
       defaultStrategy: 'jwt',
       //To get credentials
