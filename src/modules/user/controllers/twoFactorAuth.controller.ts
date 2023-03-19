@@ -14,6 +14,11 @@ import { RequestWithUser } from '../../../common/common.interface';
 import { AuthService } from '../services/auth.service';
 import { TwoFactorAuthenticationService } from '../services/twoFactorAuth.service';
 import { UserService } from '../services/user.service';
+import {
+  Swagger2FA,
+  SwaggerGenerateQR,
+  SwaggerTurnOn2Fa,
+} from '../swagger/2fa.swagger';
 @UseGuards(AuthGuard('jwt'))
 @ApiBearerAuth()
 @Controller('2fa')
@@ -25,8 +30,8 @@ export class TwoFactorAuthenticationController {
     private authService: AuthService,
   ) {}
 
-  // @UseGuards(AuthGuard('jwt'))
   @Post('generate')
+  @SwaggerGenerateQR()
   async generate(@Res() res: any, @Req() req: RequestWithUser) {
     const { otpUrl } =
       await this.twoFactorAuthService.generateTwoFactorAuthenticationSecret(
@@ -37,8 +42,8 @@ export class TwoFactorAuthenticationController {
   }
 
   @Post('authenticate')
-  // @UseGuards(AuthGuard('jwt'))
-  async authentication(@Req() req: RequestWithUser, @Body('code') code) {
+  @Swagger2FA()
+  async authentication(@Req() req: RequestWithUser, @Body() code: string) {
     const isCodeValid =
       await this.twoFactorAuthService.isTwoFactorAuthenticationCodeValid(
         code,
@@ -53,7 +58,7 @@ export class TwoFactorAuthenticationController {
   }
 
   @Post('turn-on')
-  // @UseGuards(AuthGuard('jwt'))
+  @SwaggerTurnOn2Fa()
   async turnOn2FA(@Req() req: RequestWithUser) {
     return this.userService.turnOnTwoFactorAuthentication(req.user._id);
   }

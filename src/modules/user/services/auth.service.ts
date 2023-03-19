@@ -142,7 +142,7 @@ export class AuthService {
     return user;
   }
 
-  async forgotPassword(email: string) {
+  async forgotPassword(email: string): Promise<Response<null>> {
     //Check email exists
     const user = await this.userService.findByEmail(email);
 
@@ -174,9 +174,17 @@ export class AuthService {
     //     removeOnComplete: true,
     //   },
     // );
+
+    return {
+      statusCode: 200,
+      message: 'Request for forgot password successfully',
+    };
   }
 
-  async resetPassword(newPassword: string, token: string) {
+  async resetPassword(
+    newPassword: string,
+    token: string,
+  ): Promise<Response<null>> {
     let payload: { email: string };
 
     //Check Token
@@ -199,6 +207,11 @@ export class AuthService {
           password: newHashedPassword,
         },
       );
+
+      return {
+        statusCode: 200,
+        message: 'Password updated successfully',
+      };
     } catch (error) {
       throw new InternalServerErrorException('Internal Error');
     }

@@ -16,9 +16,19 @@ import {
   ForgotPasswordDto,
   LoginUserDto,
   QueryTokenDto,
+  RefreshTokenDto,
   ResetPasswordDto,
 } from '../dto/user.dto';
 import { AuthService } from '../services/auth.service';
+import {
+  SwaggerForgotPassword,
+  SwaggerGetResetPasswordPage,
+  SwaggerLogin,
+  SwaggerLogout,
+  SwaggerRefreshToken,
+  SwaggerRegister,
+  SwaggerResetPassword,
+} from '../swagger/auth.swagger';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -26,22 +36,26 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @SwaggerRegister()
   async register(@Body() createUserDto: CreateUserDto) {
     return await this.authService.register(createUserDto);
   }
 
   @Post('login')
+  @SwaggerLogin()
   async login(@Body() loginUserDto: LoginUserDto) {
     return await this.authService.login(loginUserDto);
   }
 
   @Post('refresh')
-  async refresh(@Body() body) {
+  @SwaggerRefreshToken()
+  async refresh(@Body() body: RefreshTokenDto) {
     return await this.authService.refresh(body.refresh_token);
   }
 
   @UseGuards(AuthGuard())
   @Post('logout')
+  @SwaggerLogout()
   async logout(@Req() req: RequestWithUser) {
     await this.authService.logout(req.user);
     return {
@@ -51,6 +65,7 @@ export class AuthController {
   }
 
   @Post('forgot-password')
+  @SwaggerForgotPassword()
   async forgotPassword(@Body() body: ForgotPasswordDto) {
     await this.authService.forgotPassword(body.email);
     return {
@@ -60,6 +75,7 @@ export class AuthController {
   }
 
   @Get('reset-password')
+  @SwaggerGetResetPasswordPage()
   async getResetPasswordPage(@Query() token: QueryTokenDto) {
     return `<!DOCTYPE html>
     <html>
@@ -79,6 +95,7 @@ export class AuthController {
   }
 
   @Post('reset-password')
+  @SwaggerResetPassword()
   async resetPassword(
     @Body() body: ResetPasswordDto,
     @Query() token: QueryTokenDto,

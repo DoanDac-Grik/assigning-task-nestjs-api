@@ -34,7 +34,7 @@ import {
   SwaggerUnassignReviewer,
   SwaggerUnassignTask,
   SwaggerUpdateTask,
-} from '../task.swagger';
+} from '../swagger/task.swagger';
 
 //TODO: check task belong to workid
 @ApiBearerAuth()

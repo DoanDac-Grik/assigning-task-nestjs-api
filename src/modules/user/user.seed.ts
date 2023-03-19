@@ -11,7 +11,7 @@ const user_seeds = [
     email: 'admin@gmail.com',
     password: '123456',
     name: 'admin',
-    roles: Object.values(Role),
+    roles: [Role.User, Role.Admin],
   },
   {
     email: 'user1@gmail.com',

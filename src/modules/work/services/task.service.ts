@@ -67,6 +67,17 @@ export class TaskService {
 
   async create(user: User, data: CreateTaskDto): Promise<Response<Task>> {
     const task = { creator: user._id, stage: Stage.TODO, ...data };
+
+    const work = await this.workRepository.findById(data.workId);
+    if (!work) {
+      throw new HttpException(
+        {
+          message: 'Work not found',
+          statusCode: HttpStatus.NOT_FOUND,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const new_task = await this.taskRepository.create(task);
 
     //TODO: promise all

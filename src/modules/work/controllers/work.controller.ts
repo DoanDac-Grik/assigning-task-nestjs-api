@@ -25,7 +25,7 @@ import {
   SwaggerGetWork,
   SwaggerListWorks,
   SwaggerUpdateWork,
-} from '../work.swagger';
+} from '../swagger/work.swagger';
 @UseGuards(AuthGuard('jwt-two-factor'))
 @ApiBearerAuth()
 @Controller('works')
