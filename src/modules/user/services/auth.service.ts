@@ -12,7 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { Queue } from 'bull';
 import { Response } from '../../../common/common.interface';
 import { MailService } from '../../mail/mail.service';
-import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
+import { CreateUserDto, LoginUserDto, UpdateRoleDto } from '../dto/user.dto';
 import { User, UserTokenInfo } from '../models/user.model';
 import { UserService } from './user.service';
 

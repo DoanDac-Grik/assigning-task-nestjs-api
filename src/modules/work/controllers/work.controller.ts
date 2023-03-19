@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { MongoIdDto, PaginationQueryDto } from '../../../common/common.dto';
 import { RequestWithUser } from '../../../common/common.interface';
 import Role from '../../user/role.enum';
@@ -27,6 +27,7 @@ import {
   SwaggerUpdateWork,
 } from '../work.swagger';
 @UseGuards(AuthGuard('jwt-two-factor'))
+@ApiBearerAuth()
 @Controller('works')
 @ApiTags('Works')
 export class WorkController {

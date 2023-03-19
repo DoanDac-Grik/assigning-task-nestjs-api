@@ -14,12 +14,6 @@ const DESCRIPTION_FOR_TASK_ID = 'Task Id';
 
 export function SwaggerCreateTask() {
   return applyDecorators(
-    ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
     ApiBody({ type: CreateTaskDto }),
     ApiResponse({
       status: 201,
@@ -34,12 +28,6 @@ export function SwaggerCreateTask() {
 
 export function SwaggerListTasks() {
   return applyDecorators(
-    ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
     ApiQuery({
       name: 'page',
       required: false,
@@ -72,12 +60,6 @@ export function SwaggerListTasks() {
 export function SwaggerGetTask() {
   return applyDecorators(
     ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
-    ApiParam({
       name: 'taskId',
       required: false,
       description: DESCRIPTION_FOR_TASK_ID,
@@ -96,12 +78,6 @@ export function SwaggerGetTask() {
 
 export function SwaggerUpdateTask() {
   return applyDecorators(
-    ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
     ApiParam({
       name: 'taskId',
       required: false,
@@ -123,12 +99,6 @@ export function SwaggerUpdateTask() {
 export function SwaggerDeleteTask() {
   return applyDecorators(
     ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
-    ApiParam({
       name: 'taskId',
       required: false,
       description: DESCRIPTION_FOR_TASK_ID,
@@ -147,12 +117,6 @@ export function SwaggerDeleteTask() {
 
 export function SwaggerAssignTask() {
   return applyDecorators(
-    ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
     ApiParam({
       name: 'taskId',
       required: false,
@@ -174,12 +138,6 @@ export function SwaggerAssignTask() {
 export function SwaggerUnassignTask() {
   return applyDecorators(
     ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
-    ApiParam({
       name: 'taskId',
       required: false,
       description: DESCRIPTION_FOR_TASK_ID,
@@ -200,12 +158,6 @@ export function SwaggerUnassignTask() {
 export function SwaggerAssignReviewer() {
   return applyDecorators(
     ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
-    ApiParam({
       name: 'taskId',
       required: false,
       description: DESCRIPTION_FOR_TASK_ID,
@@ -225,12 +177,6 @@ export function SwaggerAssignReviewer() {
 
 export function SwaggerUnassignReviewer() {
   return applyDecorators(
-    ApiParam({
-      name: 'workId',
-      required: false,
-      description: DESCRIPTION_FOR_WORK_ID,
-      type: String,
-    }),
     ApiParam({
       name: 'taskId',
       required: false,

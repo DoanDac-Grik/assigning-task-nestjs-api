@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('ASSIGNING TASK')
     .setDescription('The assigning tasks API documentation')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('document', app, document);

@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { Response } from '../../../common/common.interface';
 import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User } from '../models/user.model';
 import { UserRepository } from '../repositories/user.repository';
@@ -69,6 +70,25 @@ export class UserService {
       );
     }
     return await this.userRepository.findByConditionAndUpdate(filter, update);
+  }
+
+  async updateRole(id: string, role: string): Promise<Response<null>> {
+    try {
+      const user = await this.userRepository.findByConditionAndUpdate(id, {
+        $push: { roles: role },
+      });
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: `Update role for user ${user.name}`,
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Fail to update role for user',
+        error: error,
+      };
+    }
   }
 
   async getUserByRefresh(refresh_token: string, email: string) {

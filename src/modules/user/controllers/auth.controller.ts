@@ -8,6 +8,9 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
+import { RequestWithUser } from '../../../common/common.interface';
 import {
   CreateUserDto,
   ForgotPasswordDto,
@@ -16,9 +19,6 @@ import {
   ResetPasswordDto,
 } from '../dto/user.dto';
 import { AuthService } from '../services/auth.service';
-import { AuthGuard } from '@nestjs/passport';
-import { RequestWithUser } from '../../../common/common.interface';
-import { ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('Authentication')

@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from '../../../common/common.dto';
 import { RequestWithUser } from '../../../common/common.interface';
 import Role from '../../user/role.enum';
@@ -36,8 +36,10 @@ import {
   SwaggerUpdateTask,
 } from '../task.swagger';
 
+//TODO: check task belong to workid
+@ApiBearerAuth()
 @UseGuards(AuthGuard('jwt-two-factor'))
-@Controller('works/:workId/tasks')
+@Controller('tasks')
 @ApiTags('Tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
@@ -55,13 +57,13 @@ export class TaskController {
     return this.taskService.create(req.user, data);
   }
 
-  //TODO: check task belong to workid
   @Get('/:taskId')
   @SwaggerGetTask()
   async getTaskById(@Param() paramIds: ParamIdsDto) {
     return this.taskService.getById(paramIds.taskId);
   }
 
+  @UseGuards(RoleGuard(Role.Admin))
   @Put('/:taskId')
   @SwaggerUpdateTask()
   async updateTask(
