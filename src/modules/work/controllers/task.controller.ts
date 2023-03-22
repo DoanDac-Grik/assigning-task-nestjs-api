@@ -37,8 +37,8 @@ import {
 } from '../swagger/task.swagger';
 
 //TODO: check task belong to workid
-@ApiBearerAuth()
 @UseGuards(AuthGuard('jwt-two-factor'))
+@ApiBearerAuth()
 @Controller('tasks')
 @ApiTags('Tasks')
 export class TaskController {

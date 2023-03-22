@@ -13,7 +13,7 @@ export class UserService {
     return s.split('').reverse().join('');
   }
 
-  async create(userDto: CreateUserDto) {
+  async create(userDto: Partial<User>) {
     userDto.password = await bcrypt.hash(userDto.password, 10);
 
     const user = await this.userRepository.findByCondition({
@@ -74,10 +74,14 @@ export class UserService {
 
   async updateRole(id: string, role: string): Promise<Response<null>> {
     try {
-      const user = await this.userRepository.findByConditionAndUpdate(id, {
-        $push: { roles: role },
-      });
-
+      //TODO: Check duplicate role
+      const user = await this.userRepository.findByConditionAndUpdate(
+        { _id: id },
+        {
+          $push: { roles: role },
+        },
+      );
+      console.log(user);
       return {
         statusCode: HttpStatus.OK,
         message: `Update role for user ${user.name}`,

@@ -12,8 +12,9 @@ import * as bcrypt from 'bcrypt';
 import { Queue } from 'bull';
 import { Response } from '../../../common/common.interface';
 import { MailService } from '../../mail/mail.service';
-import { CreateUserDto, LoginUserDto, UpdateRoleDto } from '../dto/user.dto';
+import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { User, UserTokenInfo } from '../models/user.model';
+import Role from '../role.enum';
 import { UserService } from './user.service';
 
 @Injectable()
@@ -69,7 +70,11 @@ export class AuthService {
   }
 
   async register(userDto: CreateUserDto): Promise<Response<UserTokenInfo>> {
-    const user = await this.userService.create(userDto);
+    //Default role is user
+    const user = await this.userService.create({
+      ...userDto,
+      roles: [Role.User],
+    });
 
     const token = await this._createToken({
       email: user.email,

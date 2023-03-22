@@ -9,19 +9,19 @@ import Role from './role.enum';
 const user_seeds = [
   {
     email: 'admin@gmail.com',
-    password: '123456',
+    password: '$2b$10$cglHGx1yj.z.12yMsbNowOIlzQ/zgQCupk2WwM2lh/T2Ym4rZb88e',
     name: 'admin',
     roles: [Role.User, Role.Admin],
   },
   {
     email: 'user1@gmail.com',
-    password: '123456',
+    password: '$2b$10$cglHGx1yj.z.12yMsbNowOIlzQ/zgQCupk2WwM2lh/T2Ym4rZb88e',
     name: 'user 1',
     roles: [Role.User],
   },
   {
     email: 'user2@gmail.com',
-    password: '123456',
+    password: '$2b$10$cglHGx1yj.z.12yMsbNowOIlzQ/zgQCupk2WwM2lh/T2Ym4rZb88e',
     name: 'user 2',
     roles: [Role.User],
   },
